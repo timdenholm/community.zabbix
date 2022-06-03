@@ -11,8 +11,7 @@ from __future__ import absolute_import, division, print_function
 __metaclass__ = type
 
 DOCUMENTATION = r'''
-name: community.zabbix.zabbix_inventory
-plugin_type: inventory
+name: zabbix_inventory
 author:
     - Timothy Test (@ttestscripting)
 short_description: Zabbix Inventory Plugin
@@ -41,7 +40,6 @@ options:
         description:
             - API query for hosts - see zabbix documentation for more details U(https://www.zabbix.com/documentation/current/manual/api/reference/host/get)
         type: dict
-        elements: dict
         default: {}
         suboptions:
             selectApplications:

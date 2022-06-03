@@ -163,6 +163,7 @@ from ansible.module_utils.basic import AnsibleModule
 
 from ansible_collections.community.zabbix.plugins.module_utils.base import ZabbixBase
 import ansible_collections.community.zabbix.plugins.module_utils.helpers as zabbix_utils
+from ansible_collections.community.zabbix.plugins.module_utils.version import LooseVersion
 
 
 class MaintenanceModule(ZabbixBase):
@@ -213,7 +214,8 @@ class MaintenanceModule(ZabbixBase):
             if tags is not None:
                 parameters['tags'] = tags
             else:
-                parameters['tags'] = []
+                if LooseVersion(self._zbx_api_version) < LooseVersion('6.0'):
+                    parameters['tags'] = []
             self._zapi.maintenance.update(parameters)
         # zabbix_api can call sys.exit() so we need to catch SystemExit here
         except (Exception, SystemExit) as e:
@@ -383,7 +385,7 @@ def main():
                 msg="At least one host_name or host_group must be defined for each created maintenance.")
 
         now = datetime.datetime.now().replace(second=0)
-        start_time = time.mktime(now.timetuple())
+        start_time = int(time.mktime(now.timetuple()))
         period = 60 * int(minutes)  # N * 60 seconds
 
         if host_groups:

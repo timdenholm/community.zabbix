@@ -5,6 +5,115 @@ community.zabbix Release Notes
 .. contents:: Topics
 
 
+v1.7.0
+======
+
+Minor Changes
+-------------
+
+- helpers.helper_compare_lists() changed logic to not consider the order of elements in lists. (https://github.com/ansible-collections/community.zabbix/pull/683)
+- zabbix_action, zabbix_maintenance, zabbix_mediatype, zabbix_proxy, zabbix_service - updated to work with Zabbix 6.0. (https://github.com/ansible-collections/community.zabbix/pull/683)
+- zabbix_script module added (https://github.com/ansible-collections/community.zabbix/issues/634)
+
+Bugfixes
+--------
+
+- Include ``PSF-license.txt`` file for ``plugins/module_utils/_version.py``.
+- zabbix_action - will no longer wipe `esc_step_to` and `esc_step_from` (https://github.com/ansible-collections/community.zabbix/issues/692)
+- zabbix_agent - added support for zabbix-agent on Ubuntu 22.04 (https://github.com/ansible-collections/community.zabbix/pull/681)
+- zabbix_agent - now properly creates webroot for issuing LE certificates (https://github.com/ansible-collections/community.zabbix/pull/677, https://github.com/ansible-collections/community.zabbix/pull/682)
+- zabbix_proxy (module) - passive proxy should be now correctly created in Zabbix 6.0 (https://github.com/ansible-collections/community.zabbix/pull/697)
+- zabbix_proxy (role) - fixed accidental regression of TLS psk file being generated for passive agent (#528) caused in (#663) (https://github.com/ansible-collections/community.zabbix/issues/680)
+
+New Modules
+-----------
+
+- community.zabbix.zabbix_script - Create/update/delete Zabbix scripts
+
+v1.6.0
+======
+
+Minor Changes
+-------------
+
+- all modules - prepare for deprecation of distutils LooseVersion.
+- collection - Add dependencies to other collections. This helps Ansible Galaxy automatically downloading collections that this collection relies on to run.
+- connection.httpapi (plugin) - add initial httpapi connection plugin.
+- httpapi.jsonrpc (plugin) - add initial httpapi for future handling of json-rpc.
+- new module zabbix authentication for configuring global authentication settings in Zabbix Server's Settings section of GUI.
+- new module zabbix_autoregister for configuring global autoregistration settings in Zabbix Server's Settings section of GUI.
+- new module zabbix_housekeeping for configuring global housekeeping settings in Zabbix Server's Settings section of GUI.
+- test_zabbix_host_info - fix Template/Group names for 5.4
+- test_zabbix_screen - disable testing for screen in 5.4 (deprecated)
+- zabbix_action - additional fixes to make module work with Zabbix 6.0 (https://github.com/ansible-collections/community.zabbix/pull/664)
+- zabbix_action - module ported to work with Zabbix 6.0 (https://github.com/ansible-collections/community.zabbix/pull/648, https://github.com/ansible-collections/community.zabbix/pull/653)
+- zabbix_action - should now correctly actions with maintenance_status conditions (https://github.com/ansible-collections/community.zabbix/pull/667)
+- zabbix_agent - Check if 'firewalld' exist and is running when handler is executed.
+- zabbix_agent - Fixed use of bare variables in conditions (https://github.com/ansible-collections/community.zabbix/pull/663)
+- zabbix_agent - Install the correct Python libxml2 package on SLES15
+- zabbix_agent - Move inclusion of the apache.yml tasks to later stage during execution of role.
+- zabbix_agent - Prepare for Zabbix 6.0.
+- zabbix_agent - Specify a minor version with zabbix_agent_version_minor for RH systems.
+- zabbix_agent - There was no way to configure a specific type for the macro.
+- zabbix_agent - Use multiple aliases in the configuration file with ``zabbix_agent_zabbix_alias`` or ``zabbix_agent2_zabbix_alias``.
+- zabbix_maintenance - added new module parameter `tags`, which allows configuring Problem Tags on maintenances.
+- zabbix_maintenance - fixed to work with Zabbix 6.0+ and Python 3.9+ (https://github.com/ansible-collections/community.zabbix/pull/665)
+- zabbix_proxy - Prepare for Zabbix 6.0.
+- zabbix_proxy - Specify a minor version with zabbix_proxy_version_minor for RH systems.
+- zabbix_proxy - Support for Sangoma and treat it like a RHEL system.
+- zabbix_server - Check the 'zabbix_server_install_database_client' variable in RedHat tasks.
+- zabbix_server - Prepare for Zabbix 6.0.
+- zabbix_server - Specify a minor version with zabbix_server_version_minor for RH systems.
+- zabbix_user - change alias property to username (changed in 5.4) (alias is now an alias for username)
+- zabbix_user_info - change alias property to username (changed in 5.4) (alias is now an alias for username)
+- zabbix_web - Change format ENCRYPTION, VERIFY_HOST from string to boolean.
+- zabbix_web - Specify a minor version with zabbix_web_version_minor for RH systems.
+
+Bugfixes
+--------
+
+- Various modules and plugins - use vendored version of ``distutils.version`` instead of the deprecated Python standard library ``distutils`` (https://github.com/ansible-collections/community.zabbix/pull/603). This superseedes #597.
+- ZapiWrapper (module_utils) - fix only partial zabbix version is returned.
+- zabbix_agent - Install Zabbix packages when zabbix_repo == other is used with yum.
+- zabbix_agent - Install the Agent for MacOSX sooner than its configuration.
+- zabbix_agent - The ``Install gpg key`` task for Debian did not work when a http proxy is configured.
+- zabbix_agent - Use the correct URL with correct version.
+- zabbix_agent - Use the correct path to determine Zabbix Agent 2 installation on Windows.
+- zabbix_agent - Using the correct hostgroup as default now.
+- zabbix_agent - fix for the autopsk, incl. tests with Molecule.
+- zabbix_host - Added small notification that an user should have read access to get hostgroups overview.
+- zabbix_host - adapter changed properties for interface comparisson
+- zabbix_maintenance - should now work when creating maintenace on Zabbix 6.0 server
+- zabbix_proxy - 'zcat' the zipped sql files to /tmp before executing it.
+- zabbix_proxy - Check MySQL version before settings mysql_innodb_default_row_format value.
+- zabbix_proxy - Install Zabbix packages when zabbix_repo == other is used with yum.
+- zabbix_server - 'zcat' the zipped sql files to /tmp before executing it.
+- zabbix_server - Check MySQL version before settings mysql_innodb_default_row_format value.
+- zabbix_server - Install Zabbix packages when zabbix_repo == other is used with yum.
+- zabbix_template - setting correct null values to fix unintentional changes
+- zabbix_web - Added some default variables if the geerlingguys apache role is not used.
+- zabbix_web - Specified the correct versions for php.
+
+New Plugins
+-----------
+
+Connection
+~~~~~~~~~~
+
+- community.zabbix.httpapi - Use httpapi to run command on network appliances
+
+Httpapi
+~~~~~~~
+
+- community.zabbix.jsonrpc - HttpApi Plugin for Zabbix
+
+New Modules
+-----------
+
+- community.zabbix.zabbix_authentication - Update Zabbix authentication
+- community.zabbix.zabbix_autoregister - Update Zabbix autoregistration
+- community.zabbix.zabbix_housekeeping - Update Zabbix housekeeping
+
 v1.5.1
 ======
 
